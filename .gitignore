@@ -3,7 +3,8 @@
 *.iml
 *.iws
 *.ipr
-
+# Git ignore
+*.gitignore
 # CMake build directories
 cmake-build-*/
 cmake-build-debug/
