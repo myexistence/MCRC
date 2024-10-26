@@ -27,15 +27,17 @@ void findNthPrecursor(std::pmr::vector<precursorToken>& precursorStorage) {
 }
 
 //Delimiter function
-void stringDelimiter(int precursorAmt, const std::string& precursorName,std::pmr::vector<precursorToken>& precursorStorage) {
+void stringDelimiter(int originalAmount,int precursorAmt, const std::string& precursorName,std::pmr::vector<precursorToken>& precursorStorage) {
     std::stringstream tempSS(precursorName);
     std::string tempStorage;
     int morePrecursors = 0;
     char response;
     char del = ' ';
+    //start delimiter
     while(std::getline(tempSS, tempStorage, del )) {
         cout<<"How many " << tempStorage << "s do you need?";
         cin>>morePrecursors;
+        morePrecursors *= originalAmount;
         precursorToken Precursors(tempStorage,morePrecursors);
         precursorStorage.push_back(Precursors);
         cout<<"Are there any precursors?";
@@ -47,7 +49,7 @@ void stringDelimiter(int precursorAmt, const std::string& precursorName,std::pmr
 }
 
 //find precursors after it has been stated there are more than 1
-void findFirstPrecursor(std::pmr::vector<precursorToken>& precursorStorage) {
+void findFirstPrecursor(int originalAmount, std::pmr::vector<precursorToken>& precursorStorage) {
     cout<<"How many precursors are there?\n";
     int findPrecursorAmount = 0;
     cin>>findPrecursorAmount;
@@ -55,7 +57,7 @@ void findFirstPrecursor(std::pmr::vector<precursorToken>& precursorStorage) {
     if(findPrecursorAmount > 1) {
         cout<< "What are there names? Insert with spaces \n";
         cin>>findPrecursorName;
-        stringDelimiter(findPrecursorAmount, findPrecursorName,precursorStorage);
+        stringDelimiter(originalAmount, findPrecursorAmount, findPrecursorName, precursorStorage);
     }
     else {
         cout<< "What is it?\n";
@@ -65,7 +67,7 @@ void findFirstPrecursor(std::pmr::vector<precursorToken>& precursorStorage) {
         int precursorAmountNeeded = 0;
         cout<< "And how many?\n";
         cin>> precursorAmountNeeded;
-        precursorToken toInput(findOnePrecursorName, precursorAmountNeeded);
+        precursorToken toInput(findOnePrecursorName, (precursorAmountNeeded * originalAmount));
         precursorStorage.push_back(toInput);
     }
 
@@ -88,7 +90,7 @@ int main() {
     //check for precursor
     if (precursor == 'y') {
         //call Precursor functions and store in vector
-        findFirstPrecursor(precursorStorage);
+        findFirstPrecursor(originalAmount, precursorStorage);
         //Print all recipes
         for (auto token : precursorStorage) {
             cout << "You need "<< token.precursorAmount << " of " << token.precursorName;
