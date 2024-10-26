@@ -1,6 +1,7 @@
 #include <iostream>
 #include <utility>
 #include <vector>
+#include <sstream>
 using std::cout;
 using std::cin;
 /* Grammar
@@ -17,19 +18,44 @@ class precursorToken {
 public:
     std::string precursorName;
     int precursorAmount = 0;
-    //token vector
-    precursorToken(std::string n, int a)
+    precursorToken(std::string n, int a)    //token pair for vector storage
         :precursorName(std::move(n)), precursorAmount(a){}
 };
+//Find the nth precursor
+void findNthPrecursor(std::pmr::vector<precursorToken>& precursorStorage) {
 
+}
+
+//Delimiter function
+void stringDelimiter(int precursorAmt, const std::string& precursorName,std::pmr::vector<precursorToken>& precursorStorage) {
+    std::stringstream tempSS(precursorName);
+    std::string tempStorage;
+    int morePrecursors = 0;
+    char response;
+    char del = ' ';
+    while(std::getline(tempSS, tempStorage, del )) {
+        cout<<"How many " << tempStorage << "s do you need?";
+        cin>>morePrecursors;
+        precursorToken Precursors(tempStorage,morePrecursors);
+        precursorStorage.push_back(Precursors);
+        cout<<"Are there any precursors?";
+        cin>> response;
+        if (response == 'y')
+            findNthPrecursor(precursorStorage);
+
+    }
+}
 
 //find precursors after it has been stated there are more than 1
-void findFirstPrecursor(std::pmr::vector<precursorToken>& precursorTracking) {
+void findFirstPrecursor(std::pmr::vector<precursorToken>& precursorStorage) {
     cout<<"How many precursors are there?\n";
     int findPrecursorAmount = 0;
     cin>>findPrecursorAmount;
     std::string findPrecursorName;
     if(findPrecursorAmount > 1) {
+        cout<< "What are there names? Insert with spaces \n";
+        cin>>findPrecursorName;
+        stringDelimiter(findPrecursorAmount, findPrecursorName,precursorStorage);
     }
     else {
         cout<< "What is it?\n";
@@ -40,14 +66,12 @@ void findFirstPrecursor(std::pmr::vector<precursorToken>& precursorTracking) {
         cout<< "And how many?\n";
         cin>> precursorAmountNeeded;
         precursorToken toInput(findOnePrecursorName, precursorAmountNeeded);
-        precursorTracking.push_back(toInput);
+        precursorStorage.push_back(toInput);
     }
 
 }
 
-std::vector<precursorToken> findNthPrecursor() {
 
-}
 
 
 int main() {
