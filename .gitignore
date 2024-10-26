@@ -1,0 +1,17 @@
+# CLion specific
+.idea/
+*.iml
+*.iws
+*.ipr
+
+# CMake build directories
+cmake-build-*/
+cmake-build-debug/
+cmake-build-release/
+
+# Build outputs
+out/
+build/
+
+# macOS specific
+.DS_Store
