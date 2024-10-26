@@ -17,27 +17,21 @@ class precursorToken {
 public:
     std::string precursorName;
     int precursorAmount = 0;
+    //token vector
     precursorToken(std::string n, int a)
         :precursorName(std::move(n)), precursorAmount(a){}
 };
-//testing again
 
-precursorToken findPrecursor(int x) { //find precursors after it has been stated there are more than 1
-    int findPrecursorMultiple = x;
+
+//find precursors after it has been stated there are more than 1
+void findFirstPrecursor(std::pmr::vector<precursorToken>& precursorTracking) {
     cout<<"How many precursors are there?\n";
     int findPrecursorAmount = 0;
     cin>>findPrecursorAmount;
     std::string findPrecursorName;
     if(findPrecursorAmount > 1) {
-        //loop through amount of precursors and give them names
-        for (int i = 0; i < findPrecursorAmount; ++i) {
-            cout<< "Name one precursor" << std::endl;
-            std::getline(cin >> std::ws, findPrecursorName);
-/* The simplest start is by just outputting each precurssor as it is found */
-
-        }
     }
-    else { //case for only one precurssor
+    else {
         cout<< "What is it?\n";
         std::string findOnePrecursorName;
         std::getline(cin >> std::ws, findOnePrecursorName);
@@ -45,10 +39,19 @@ precursorToken findPrecursor(int x) { //find precursors after it has been stated
         int precursorAmountNeeded = 0;
         cout<< "And how many?\n";
         cin>> precursorAmountNeeded;
-        return {findOnePrecursorName, precursorAmountNeeded};
+        precursorToken toInput(findOnePrecursorName, precursorAmountNeeded);
+        precursorTracking.push_back(toInput);
     }
+
 }
+
+std::vector<precursorToken> findNthPrecursor() {
+
+}
+
+
 int main() {
+    std::pmr::vector<precursorToken> precursorStorage;
     cout<<"What do you want to craft? \n";
     std::string originalCraft;
     std::getline(cin >> std::ws, originalCraft);
@@ -60,13 +63,14 @@ int main() {
     cin>> precursor;
     //check for precursor
     if (precursor == 'y') {
-        //call Precursor function and use token to grab return token
-        precursorToken final = findPrecursor(originalAmount);
-        int finalNum = final.precursorAmount;
-        std::string finalName = final.precursorName;
-        cout<<"To make "<< originalAmount << " " << originalCraft << "s\n";
-        cout<< "You need " << finalNum * originalAmount << " " << finalName << "s";
+        //call Precursor functions and store in vector
+        findFirstPrecursor(precursorStorage);
+        //Print all recipes
+        for (auto token : precursorStorage) {
+            cout << "You need "<< token.precursorAmount << " of " << token.precursorName;
+        }
     }
-    else
+    else {
         cout<<"No precursors? Just make " <<originalAmount << " " << originalCraft << "(s)\n";
+    }
 }
