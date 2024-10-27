@@ -29,13 +29,11 @@ public:
     findPrecursorToken(std::string n, int a)
         :findPrecursorName(std::move(n)), originalAmount(a){}
 };
-//Find the nth precursor
-void findNthPrecursor(std::pmr::vector<precursorToken>& precursorStorage) {
 
-}
+void findNthPrecursor(int originalAmount, std::pmr::vector<precursorToken>& precursorStorage);
 
 //Delimiter function
-void stringDelimiter(findPrecursorToken findToken,std::pmr::vector<precursorToken>& precursorStorage) {
+void stringDelimiter(const findPrecursorToken& findToken,std::pmr::vector<precursorToken>& precursorStorage) {
     std::stringstream tempSS(findToken.findPrecursorName);
     std::string tempStorage;
     int morePrecursors = 0;
@@ -56,12 +54,42 @@ void stringDelimiter(findPrecursorToken findToken,std::pmr::vector<precursorToke
         cout<<"Are there any precursors?\n";
         cin>> response;
         if (response == 'y')
-            findNthPrecursor(precursorStorage);
+            findNthPrecursor(morePrecursors,precursorStorage);
     }
 }
 
+//Find the nth precursor
+void findNthPrecursor(const int originalAmount, std::pmr::vector<precursorToken>& precursorStorage) {
+    cout<<"How many precursors are there?\n";
+    int findPrecursorAmount = 0;
+    cin>>findPrecursorAmount;
+    std::string findPrecursorName;
+    if(findPrecursorAmount > 1) {
+        cout<< "What are there names? Insert with commas and no spaces \n";
+        cin>>findPrecursorName;
+        //create token with amount limiter
+        findPrecursorToken findToken(findPrecursorName, originalAmount);
+        //printing
+        //cout<< "precursor names: " << findToken.findPrecursorName << "\nprecursor amts: " << findToken.originalAmount << "\n";
+        stringDelimiter(findToken, precursorStorage);
+    }
+    else {
+        cout<< "What is it?\n";
+        std::string findOnePrecursorName;
+        std::getline(cin >> std::ws, findOnePrecursorName);
+        //cin.ignore(0,'\n');
+        int precursorAmountNeeded = 0;
+        cin.ignore(10000, '\n');
+        cout<< "And how many?\n";
+        cin>> precursorAmountNeeded;
+        precursorToken toInput(findOnePrecursorName, (precursorAmountNeeded * originalAmount));
+        precursorStorage.push_back(toInput);
+    }
+
+}
+
 //find precursors after it has been stated there are more than 1
-void findFirstPrecursor(int originalAmount, std::pmr::vector<precursorToken>& precursorStorage) {
+void findFirstPrecursor(const int originalAmount, std::pmr::vector<precursorToken>& precursorStorage) {
     cout<<"How many precursors are there?\n";
     int findPrecursorAmount = 0;
     cin>>findPrecursorAmount;
@@ -81,6 +109,7 @@ void findFirstPrecursor(int originalAmount, std::pmr::vector<precursorToken>& pr
         std::getline(cin >> std::ws, findOnePrecursorName);
         //cin.ignore(0,'\n');
         int precursorAmountNeeded = 0;
+        cin.ignore(10000, '\n');
         cout<< "And how many?\n";
         cin>> precursorAmountNeeded;
         precursorToken toInput(findOnePrecursorName, (precursorAmountNeeded * originalAmount));
@@ -105,7 +134,7 @@ int main() {
         //call Precursor functions and store in vector
         findFirstPrecursor(originalAmount, precursorStorage);
         //Print all recipes
-        for (auto token : precursorStorage) {
+        for (const auto& token : precursorStorage) {
             cout << "You need "<< token.precursorAmount << " " << token.precursorName << "\n";
         }
     }
