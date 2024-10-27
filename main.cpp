@@ -25,9 +25,9 @@ public:
 class findPrecursorToken {
 public:
     std::string findPrecursorName;
-    int findPrecursorAmt;
+    int originalAmount;
     findPrecursorToken(std::string n, int a)
-        :findPrecursorName(std::move(n)), findPrecursorAmt(a){}
+        :findPrecursorName(std::move(n)), originalAmount(a){}
 };
 //Find the nth precursor
 void findNthPrecursor(std::pmr::vector<precursorToken>& precursorStorage) {
@@ -35,24 +35,28 @@ void findNthPrecursor(std::pmr::vector<precursorToken>& precursorStorage) {
 }
 
 //Delimiter function
-void stringDelimiter(int originalAmount,int precursorAmt, const std::string& precursorName,std::pmr::vector<precursorToken>& precursorStorage) {
-    std::stringstream tempSS(precursorName);
+void stringDelimiter(findPrecursorToken findToken,std::pmr::vector<precursorToken>& precursorStorage) {
+    std::stringstream tempSS(findToken.findPrecursorName);
     std::string tempStorage;
     int morePrecursors = 0;
     char response;
-    char del = ' '; //passing in the object and manpiulating is cleaner
+    char del = ',';
     //start delimiter
     while(std::getline(tempSS, tempStorage, del )) {
-        cout<<"How many " << tempStorage << "s do you need?";
+        cin.ignore(10000, '\n');
+        cout<<"How many " << tempStorage << "s do you need?\n";
         cin>>morePrecursors;
-        morePrecursors *= originalAmount;
+        //printing test
+            //cout<< morePrecursors << tempStorage;
+        morePrecursors *= findToken.originalAmount;
+           // cout<< morePrecursors << findToken.originalAmount;
         precursorToken Precursors(tempStorage,morePrecursors);
         precursorStorage.push_back(Precursors);
-        cout<<"Are there any precursors?";
+            //cout<< precursorStorage[0].precursorAmount;
+        cout<<"Are there any precursors?\n";
         cin>> response;
         if (response == 'y')
             findNthPrecursor(precursorStorage);
-
     }
 }
 
@@ -63,10 +67,13 @@ void findFirstPrecursor(int originalAmount, std::pmr::vector<precursorToken>& pr
     cin>>findPrecursorAmount;
     std::string findPrecursorName;
     if(findPrecursorAmount > 1) {
-        cout<< "What are there names? Insert with spaces \n";
+        cout<< "What are there names? Insert with commas and no spaces \n";
         cin>>findPrecursorName;
         //create token with amount limiter
-        stringDelimiter(originalAmount, findPrecursorAmount, findPrecursorName, precursorStorage);
+        findPrecursorToken findToken(findPrecursorName, originalAmount);
+        //printing
+            //cout<< "precursor names: " << findToken.findPrecursorName << "\nprecursor amts: " << findToken.originalAmount << "\n";
+        stringDelimiter(findToken, precursorStorage);
     }
     else {
         cout<< "What is it?\n";
@@ -81,15 +88,12 @@ void findFirstPrecursor(int originalAmount, std::pmr::vector<precursorToken>& pr
     }
 
 }
-
-
-
-
 int main() {
     std::pmr::vector<precursorToken> precursorStorage;
     cout<<"What do you want to craft? \n";
     std::string originalCraft;
     std::getline(cin >> std::ws, originalCraft);
+    //cin.ignore(10000, '\n');
     cout<<"How many?\n";
     int originalAmount;
     cin>> originalAmount;
@@ -102,7 +106,7 @@ int main() {
         findFirstPrecursor(originalAmount, precursorStorage);
         //Print all recipes
         for (auto token : precursorStorage) {
-            cout << "You need "<< token.precursorAmount << " of " << token.precursorName;
+            cout << "You need "<< token.precursorAmount << " " << token.precursorName << "\n";
         }
     }
     else {
