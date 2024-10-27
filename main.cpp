@@ -2,6 +2,7 @@
 #include <utility>
 #include <vector>
 #include <sstream>
+#include <__algorithm/ranges_find.h>
 using std::cout;
 using std::cin;
 /* Grammar
@@ -20,6 +21,9 @@ public:
     int precursorAmount = 0;
     precursorToken(std::string n, int a)    //token pair for vector storage
         :precursorName(std::move(n)), precursorAmount(a){}
+    bool operator==(const precursorToken & compare) const {
+        return precursorName == compare.precursorName;
+    }
 };
 //Token for passing args w/o more params
 class findPrecursorToken {
@@ -31,6 +35,19 @@ public:
 };
 
 void findNthPrecursor(int originalAmount, std::pmr::vector<precursorToken>& precursorStorage);
+
+//Look through vector for pre-existing precursors
+//We need: the current vector, the precursor in question, amount needed. If the precursor in question exists, modify on iterator, else create new
+bool existsCheck(const precursorToken& Precursors, std::pmr::vector<precursorToken>& precursorStorage) {
+    if(auto searchVector
+        = std::find(precursorStorage.begin(), precursorStorage.end(), Precursors);
+        searchVector != precursorStorage.end())
+    {
+        searchVector->precursorAmount += Precursors.precursorAmount;
+        return true;
+}
+    return false;
+}
 
 //Delimiter function
 void stringDelimiter(const findPrecursorToken& findToken,std::pmr::vector<precursorToken>& precursorStorage) {
@@ -46,11 +63,10 @@ void stringDelimiter(const findPrecursorToken& findToken,std::pmr::vector<precur
         cin>>morePrecursors;
         //printing test
             //cout<< morePrecursors << tempStorage;
-        morePrecursors *= findToken.originalAmount;
+            morePrecursors *= findToken.originalAmount;
            // cout<< morePrecursors << findToken.originalAmount;
-        precursorToken Precursors(tempStorage,morePrecursors);
-        precursorStorage.push_back(Precursors);
-            //cout<< precursorStorage[0].precursorAmount;
+        if (precursorToken Precursors(tempStorage,morePrecursors); existsCheck(Precursors, precursorStorage) == false)
+            precursorStorage.push_back(Precursors);
         cout<<"Are there any precursors?\n";
         cin>> response;
         if (response == 'y')
