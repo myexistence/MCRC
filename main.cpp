@@ -21,6 +21,14 @@ public:
     precursorToken(std::string n, int a)    //token pair for vector storage
         :precursorName(std::move(n)), precursorAmount(a){}
 };
+//Token for passing args w/o more params
+class findPrecursorToken {
+public:
+    std::string findPrecursorName;
+    int findPrecursorAmt;
+    findPrecursorToken(std::string n, int a)
+        :findPrecursorName(std::move(n)), findPrecursorAmt(a){}
+};
 //Find the nth precursor
 void findNthPrecursor(std::pmr::vector<precursorToken>& precursorStorage) {
 
@@ -32,7 +40,7 @@ void stringDelimiter(int originalAmount,int precursorAmt, const std::string& pre
     std::string tempStorage;
     int morePrecursors = 0;
     char response;
-    char del = ' ';
+    char del = ' '; //passing in the object and manpiulating is cleaner
     //start delimiter
     while(std::getline(tempSS, tempStorage, del )) {
         cout<<"How many " << tempStorage << "s do you need?";
@@ -57,6 +65,7 @@ void findFirstPrecursor(int originalAmount, std::pmr::vector<precursorToken>& pr
     if(findPrecursorAmount > 1) {
         cout<< "What are there names? Insert with spaces \n";
         cin>>findPrecursorName;
+        //create token with amount limiter
         stringDelimiter(originalAmount, findPrecursorAmount, findPrecursorName, precursorStorage);
     }
     else {
