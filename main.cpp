@@ -103,31 +103,6 @@ void findNthPrecursor(std::string & parentRecipe,const int originalAmount, std::
         precursorStorage.push_back(toInput);
     }
 }
-//find precursors after it has been stated there are more than 1
-void findFirstPrecursor(std::string& parentRecipe,const int originalAmount, std::pmr::vector<precursorToken>& precursorStorage) {
-    cout<<"How many precursors are there?\n";
-    int findPrecursorAmount = 0;
-    cin>>findPrecursorAmount;
-    if(std::string findPrecursorName;findPrecursorAmount > 1) {
-        cout<< "What are there names? Insert with commas and no spaces \n";
-        cin>>findPrecursorName;
-        //create token with amount limiter
-        findPrecursorToken findToken(findPrecursorName, originalAmount);
-        stringDelimiter(parentRecipe,findToken, precursorStorage);
-    }
-    else {
-        cout<< "What is it?\n";
-        std::string findOnePrecursorName;
-        std::getline(cin >> std::ws, findOnePrecursorName);
-        //cin.ignore(0,'\n');
-        int precursorAmountNeeded = 0;
-        cin.ignore(10000, '\n');
-        cout<< "And how many?\n";
-        cin>> precursorAmountNeeded;
-        precursorToken toInput(findOnePrecursorName, (precursorAmountNeeded * originalAmount));
-        precursorStorage.push_back(toInput);
-    }
-}
 int main() {
     cout<<"What do you want to craft? \n";
     std::string originalCraft;
@@ -142,7 +117,7 @@ int main() {
     //check for precursor
     if (std::pmr::vector<precursorToken> precursorStorage;precursor == 'y') {
         //call Precursor functions and store in vector
-        findFirstPrecursor(originalCraft,originalAmount, precursorStorage);
+        findNthPrecursor(originalCraft,originalAmount, precursorStorage);
         //lambda sort rule for greatest to least
         auto sortRule = [] (const precursorToken& a, const precursorToken& b) {
             return a > b;
