@@ -34,7 +34,7 @@ public:
         :findPrecursorName(std::move(n)), originalAmount(a){}
 };
 
-void findNthPrecursor(int originalAmount, std::pmr::vector<precursorToken>& precursorStorage);
+void findNthPrecursor(std::string & parentRecipe,int originalAmount, std::pmr::vector<precursorToken>& precursorStorage);
 
 //Look through vector for pre-existing precursors
 //We need: the current vector, the precursor in question, amount needed. If the precursor in question exists, modify on iterator, else create new
@@ -48,9 +48,8 @@ bool existsCheck(const precursorToken& Precursors, std::pmr::vector<precursorTok
 }
     return false;
 }
-
 //Delimiter function
-void stringDelimiter(const findPrecursorToken& findToken,std::pmr::vector<precursorToken>& precursorStorage) {
+void stringDelimiter(std::string& parentRecipe, const findPrecursorToken& findToken,std::pmr::vector<precursorToken>& precursorStorage) {
     std::stringstream tempSS(findToken.findPrecursorName);
     std::string tempStorage;
     int morePrecursors = 0;
@@ -58,6 +57,7 @@ void stringDelimiter(const findPrecursorToken& findToken,std::pmr::vector<precur
     char del = ',';
     //start delimiter
     while(std::getline(tempSS, tempStorage, del )) {
+        std::string newParent = tempStorage;
         cin.ignore(10000, '\n');
         cout<<"How many " << tempStorage << "s do you need?\n";
         cin>>morePrecursors;
@@ -69,13 +69,15 @@ void stringDelimiter(const findPrecursorToken& findToken,std::pmr::vector<precur
             precursorStorage.push_back(Precursors);
         cout<<"Are there any precursors?\n";
         cin>> response;
-        if (response == 'y')
-            findNthPrecursor(morePrecursors,precursorStorage);
+        if (response == 'y') {
+            findNthPrecursor(newParent, morePrecursors,precursorStorage);
+            cout<< "Back in "<< parentRecipe << ". \n";
+        }
     }
 }
 
 //Find the nth precursor
-void findNthPrecursor(const int originalAmount, std::pmr::vector<precursorToken>& precursorStorage) {
+void findNthPrecursor(std::string & parentRecipe,const int originalAmount, std::pmr::vector<precursorToken>& precursorStorage) {
     cout<<"How many precursors are there?\n";
     int findPrecursorAmount = 0;
     cin>>findPrecursorAmount;
@@ -87,7 +89,7 @@ void findNthPrecursor(const int originalAmount, std::pmr::vector<precursorToken>
         findPrecursorToken findToken(findPrecursorName, originalAmount);
         //printing
         //cout<< "precursor names: " << findToken.findPrecursorName << "\nprecursor amts: " << findToken.originalAmount << "\n";
-        stringDelimiter(findToken, precursorStorage);
+        stringDelimiter(parentRecipe, findToken, precursorStorage);
     }
     else {
         cout<< "What is it?\n";
@@ -105,7 +107,7 @@ void findNthPrecursor(const int originalAmount, std::pmr::vector<precursorToken>
 }
 
 //find precursors after it has been stated there are more than 1
-void findFirstPrecursor(const int originalAmount, std::pmr::vector<precursorToken>& precursorStorage) {
+void findFirstPrecursor(std::string& parentRecipe,const int originalAmount, std::pmr::vector<precursorToken>& precursorStorage) {
     cout<<"How many precursors are there?\n";
     int findPrecursorAmount = 0;
     cin>>findPrecursorAmount;
@@ -117,7 +119,7 @@ void findFirstPrecursor(const int originalAmount, std::pmr::vector<precursorToke
         findPrecursorToken findToken(findPrecursorName, originalAmount);
         //printing
             //cout<< "precursor names: " << findToken.findPrecursorName << "\nprecursor amts: " << findToken.originalAmount << "\n";
-        stringDelimiter(findToken, precursorStorage);
+        stringDelimiter(parentRecipe,findToken, precursorStorage);
     }
     else {
         cout<< "What is it?\n";
@@ -148,7 +150,7 @@ int main() {
     //check for precursor
     if (precursor == 'y') {
         //call Precursor functions and store in vector
-        findFirstPrecursor(originalAmount, precursorStorage);
+        findFirstPrecursor(originalCraft,originalAmount, precursorStorage);
         //Print all recipes
         for (const auto& token : precursorStorage) {
             cout << "You need "<< token.precursorAmount << " " << token.precursorName << "\n";
