@@ -4,4 +4,8 @@ project(Learning)
 set(CMAKE_CXX_STANDARD 23)
 
 add_executable(Learning main.cpp
-        main.cpp)
+        main.cpp
+        parseProc.cpp
+        parseProc.h
+        precursorToken.h
+)

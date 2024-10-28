@@ -1,9 +1,13 @@
 #include <iostream>
 #include <utility>
-#include <vector>
 #include <sstream>
 #include <__algorithm/ranges_find.h>
 #include <__algorithm/ranges_sort.h>
+
+#include <json.hpp>
+#include "parseProc.h"
+
+using precursor::precursorToken;
 using std::cout;
 using std::cin;
 /* Grammar
@@ -15,21 +19,7 @@ using std::cin;
  * String
  *  "string"
  */
-class precursorToken {
-public:
-    std::string precursorName;
-    int precursorAmount = 0;
-    precursorToken(std::string n, int a)    //token pair for vector storage
-        :precursorName(std::move(n)), precursorAmount(a){}
-    //allows token to be found
-    bool operator==(const precursorToken & compare) const {
-        return precursorName == compare.precursorName;
-    }
-    //allows token to be sorted
-    bool operator>(const precursorToken & compare) const {
-        return precursorAmount > compare.precursorAmount;
-    }
-};
+
 //Token for passing args w/o more params
 class findPrecursorToken {
 public:
@@ -38,6 +28,7 @@ public:
     findPrecursorToken(std::string n, int a)
         :findPrecursorName(std::move(n)), originalAmount(a){}
 };
+
 void findNthPrecursor(std::string & parentRecipe,int originalAmount, std::pmr::vector<precursorToken>& precursorStorage);
 //Look through vector for pre-existing precursors
 //We need: the current vector, the precursor in question, amount needed. If the precursor in question exists, modify on iterator, else create new
