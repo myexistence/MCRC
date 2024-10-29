@@ -17,16 +17,19 @@ namespace parse {
         });
     }
 
-    int parseProc::matchID(const std::string &nameMatch) {
-        if(checkJsonNameExists(nameMatch) == true) {
-            for (const auto& it : database["baseItems"])
-                if(it["name"] == nameMatch)
-                    return  it["id"];
-
-            for (const auto& it : database["recipes"])
-                if(it["name"] == nameMatch)
-                    return  it["id"];
+    int parseProc::matchID(const std::string &nameMatch){
+        if(!checkJsonNameExists(nameMatch) == true){
+            std::cerr<<"ERROR: Tried to match " << nameMatch << " and it doesn't exist"<<std::endl<<"EXITING";
+            return -1;
         }
+        for (const auto& it : database["baseItems"])
+            if(it["name"] == nameMatch)
+                return  it["id"];
+        for (const auto& it : database["recipes"])
+            if(it["name"] == nameMatch)
+                    return  it["id"];
+        std::cerr << "ERROR: "<< nameMatch << " exists but has no matching ID" << std::endl << "EXITING";
+        return -1;
     }
 
     nlohmann::json parseProc::createPrecursorInput(const std::pmr::vector<precursor::precursorToken>& precursors) {
