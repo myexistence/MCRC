@@ -9,17 +9,16 @@ using std::cout;
 using std::cin;
 
 namespace parse {
-    void addBaseItem(std::string name, parseProc& database) {
+    void parseProc::addBaseItem(const std::string& name) {
+
 
     }
-    void amendRecipe(std::string recipe, int, parseProc database) {
+    void parseProc::amendRecipe(const std::string& recipe, int) {
 
     }
-    void addRecipe(precursor::precursorToken& parent,
-                    std::pmr::vector<precursor::precursorToken> precursorStorage,
-                    parseProc& database) {
+    void parseProc::addRecipe(precursor::precursorToken& parent,
+                    const std::pmr::vector<precursor::precursorToken>& precursorStorage){};
 
-    }
     bool parseProc::checkJsonNameExists(std::string& name) {
         for (const auto& it: database["basicItems"])
             if(it["name"]== name)
