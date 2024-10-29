@@ -16,11 +16,36 @@ namespace parse {
         {"id",id}
         });
     }
-    void parseProc::amendRecipe(const std::string& recipe, int) {
+
+    int parseProc::matchID(const std::string &nameMatch) {
 
     }
+
+
+    nlohmann::json parseProc::createPrecursorInput(const std::pmr::vector<precursor::precursorToken>& precursors) {
+        nlohmann::json holdPrecursor = nlohmann::json::array();
+        for (const auto& it: precursors) {
+            holdPrecursor.push_back({
+                {"amount", it.precursorAmount},
+                {"name", it.precursorName}
+            });
+        }
+        return holdPrecursor;
+    }
+
+
+    void parseProc::amendRecipe(const std::string& recipe, int) {
+    }
     void parseProc::addRecipe(precursor::precursorToken& parent,
-                    const std::pmr::vector<precursor::precursorToken>& precursorStorage){};
+        const std::pmr::vector<precursor::precursorToken>& precursors) {
+
+        auto nextID = nextJsonID();
+        database["recipes"].push_back({
+        {"amount", 1 /*parent.yield create yield member in precursorToken*/},
+        {"id", nextID},
+        {"name", parent.precursorName},
+        {"precursors", createPrecursorInput(precursors)}});
+    }
 
     bool parseProc::checkJsonNameExists(std::string& name) {
         for (const auto& it: database["basicItems"])
@@ -41,7 +66,10 @@ namespace parse {
         std::ofstream output;
         output << std::setw(4) << database;
     }
-    void multiplyRecipe();
+    void parseProc::multiplyRecipe() {
+
+    }
+
 
 
 } // parse
