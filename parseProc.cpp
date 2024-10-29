@@ -10,8 +10,11 @@ using std::cin;
 
 namespace parse {
     void parseProc::addBaseItem(const std::string& name) {
-
-
+        auto id = nextJsonID();
+        database["basicItems"].push_back({
+        {"name",name},
+        {"id",id}
+        });
     }
     void parseProc::amendRecipe(const std::string& recipe, int) {
 
