@@ -18,7 +18,7 @@ namespace parse {
     }
 
     int parseProc::matchID(const std::string &nameMatch){
-        if(!checkJsonNameExists(nameMatch) == true){
+        if(!checkJsonNameExists(nameMatch)){
             std::cerr<<"ERROR: Tried to match " << nameMatch << " and it doesn't exist"<<std::endl<<"EXITING";
             return -1;
         }
@@ -27,7 +27,7 @@ namespace parse {
                 return  it["id"];
         for (const auto& it : database["recipes"])
             if(it["name"] == nameMatch)
-                    return  it["id"];
+                return  it["id"];
         std::cerr << "ERROR: "<< nameMatch << " exists but has no matching ID" << std::endl << "EXITING";
         return -1;
     }
@@ -52,23 +52,33 @@ namespace parse {
         return precursors;
     }
 
-    void parseProc::addNewRecipe(precursor::precursorToken& parent, const std::pmr::vector<precursor::precursorToken>& precursors) {
+    void parseProc::addNewRecipe(precursor::precursorToken& parent, nlohmann::json& precursors) {
         auto nextID = nextJsonID();
         database["recipes"].push_back({
         {"amount", 1 /*parent.yield create yield member in precursorToken*/},
         {"id", nextID},
         {"name", parent.precursorName},
-        {"precursors", createPrecursorInput(precursors)}});
+        {"precursors", precursors}});
     }
 
-    bool parseProc::checkJsonNameExists(const std::string& name) {
+    bool parseProc::checkBasicItems(const std::string& name) {
         for (const auto& it: database["basicItems"])
-            if(it["name"]== name)
+            if(it["name"] == name)
                 return true;
+        return false;
+    }
+
+    bool parseProc::checkRecipes(const std::string& name) {
         for(const auto& it : database["recipes"])
             if(it["name"] == name)
                 return true;
         return false;
+    }
+
+    bool parseProc::checkJsonNameExists(const std::string& name) {
+        if (!checkBasicItems(name) && !checkRecipes(name))
+            return false;
+        return true;
     }
     int parseProc::nextJsonID() {
         size_t idCount = 0;
@@ -80,7 +90,12 @@ namespace parse {
         std::ofstream output;
         output << std::setw(4) << database;
     }
-    void parseProc::multiplyRecipe() {
+    void parseProc::multiplyRecipe(const std::string& recipeName, const int& amount) {
+         std::pmr::vector<precursor::precursorToken> Precursors = findPrecursors(recipeName);
+
+
+
+
 
     }
 

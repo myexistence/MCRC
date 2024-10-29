@@ -32,7 +32,7 @@ namespace parse {
             nlohmann::json createPrecursorInput(const std::pmr::vector<precursor::precursorToken>& precursors);
 
             void addNewRecipe(precursor::precursorToken& parent,
-                const std::pmr::vector<precursor::precursorToken>& precursors);
+                nlohmann::json& precursors);
 
             bool checkJsonNameExists(const std::string& name);
 
@@ -40,7 +40,11 @@ namespace parse {
 
             void saveJson();
 
-            void multiplyRecipe();
+            bool checkBasicItems(const std::string& name);
+
+            bool checkRecipes(const std::string& name);
+
+            void multiplyRecipe(const std::string& recipeName, const int& amount);
         };
 
 
