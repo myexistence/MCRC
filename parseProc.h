@@ -34,7 +34,7 @@ namespace parse {
             void addRecipe(precursor::precursorToken& parent,
                 const std::pmr::vector<precursor::precursorToken>& precursors);
 
-            bool checkJsonNameExists(std::string& name);
+            bool checkJsonNameExists(const std::string& name);
 
             int nextJsonID();
 
