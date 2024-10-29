@@ -19,13 +19,12 @@ namespace parse {
                 std::ifstream input(filename);
                 input >> database;
             }
-            void addBaseItem(std::string name, parseProc& database);
+            void addBaseItem(std::string name);
 
-            void amendRecipe(std::string recipe, int, parseProc database);
+            void amendRecipe(std::string recipe, int);
 
             void addRecipe(precursor::precursorToken& parent,
-                            std::pmr::vector<precursor::precursorToken> precursorStorage,
-                            parseProc& database);
+                            std::pmr::vector<precursor::precursorToken> precursorStorage);
 
             bool checkJsonNameExists(std::string& name);
 
@@ -33,7 +32,7 @@ namespace parse {
 
             void saveJson();
 
-            void multiplyRecipe(parseProc& database);
+            void multiplyRecipe();
         };
 
 
