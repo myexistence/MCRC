@@ -91,7 +91,12 @@ namespace parse {
         output << std::setw(4) << database;
     }
     void parseProc::multiplyRecipe(const std::string& recipeName, const int& amount) {
-         std::pmr::vector<precursor::precursorToken> Precursors = findPrecursors(recipeName);
+        std::pmr::vector<precursor::precursorToken> cleanData;
+        while( std::pmr::vector<precursor::precursorToken>& rawData = findPrecursors(recipeName)) {
+
+
+        }
+
 
 
 
