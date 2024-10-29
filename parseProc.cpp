@@ -43,12 +43,16 @@ namespace parse {
         return holdPrecursor;
     }
 
-
-    void parseProc::amendRecipe(const std::string& recipe, int) {
+    nlohmann::json parseProc::toAppend(const std::string& precursorName, nlohmann::json& precursors, const int& amount) {
+        int id = matchID(precursorName);
+        precursors.push_back({
+        {"amount", amount},
+        {"id",id}
+        });
+        return precursors;
     }
-    void parseProc::addRecipe(precursor::precursorToken& parent,
-        const std::pmr::vector<precursor::precursorToken>& precursors) {
 
+    void parseProc::addRecipe(precursor::precursorToken& parent, const std::pmr::vector<precursor::precursorToken>& precursors) {
         auto nextID = nextJsonID();
         database["recipes"].push_back({
         {"amount", 1 /*parent.yield create yield member in precursorToken*/},

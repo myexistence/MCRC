@@ -42,6 +42,10 @@ bool existsCheck(const precursorToken& Precursors, std::pmr::vector<precursorTok
 }
     return false;
 }
+
+/*
+ * Rewrite functions, need to build recipe first, then output amount
+ */
 //Delimiter function
 void stringDelimiter(std::string& parentRecipe, const findPrecursorToken& findToken,std::pmr::vector<precursorToken>& precursorStorage) {
     std::stringstream tempSS(findToken.findPrecursorName);

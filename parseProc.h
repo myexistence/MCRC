@@ -24,7 +24,7 @@ namespace parse {
             };
             void addBaseItem(const std::string& name);
 
-            void amendRecipe(const std::string& recipe, int);
+            nlohmann::json toAppend(const std::string& precursorName, nlohmann::json& precursors, const int& amount);
 
             int matchID (const std::string& nameMatch);
 
