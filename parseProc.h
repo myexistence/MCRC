@@ -31,7 +31,7 @@ namespace parse {
 
             nlohmann::json createPrecursorInput(const std::pmr::vector<precursor::precursorToken>& precursors);
 
-            void addRecipe(precursor::precursorToken& parent,
+            void addNewRecipe(precursor::precursorToken& parent,
                 const std::pmr::vector<precursor::precursorToken>& precursors);
 
             bool checkJsonNameExists(const std::string& name);

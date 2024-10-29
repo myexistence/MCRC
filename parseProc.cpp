@@ -52,7 +52,7 @@ namespace parse {
         return precursors;
     }
 
-    void parseProc::addRecipe(precursor::precursorToken& parent, const std::pmr::vector<precursor::precursorToken>& precursors) {
+    void parseProc::addNewRecipe(precursor::precursorToken& parent, const std::pmr::vector<precursor::precursorToken>& precursors) {
         auto nextID = nextJsonID();
         database["recipes"].push_back({
         {"amount", 1 /*parent.yield create yield member in precursorToken*/},
