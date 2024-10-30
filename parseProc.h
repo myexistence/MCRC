@@ -29,9 +29,10 @@ namespace parse {
             int matchID (const std::string& nameMatch);
 
 
-            nlohmann::json createPrecursorInput(const std::pmr::vector<precursor::precursorToken>& precursors);
+            nlohmann::json createPrecursorInput(const std::pmr::vector<precursor::precursorToken>& precursors,
+                nlohmann::json& precursorArray);
 
-            void addNewRecipe(precursor::precursorToken& parent,
+            void addNewRecipe(const std::string& parent,
                 nlohmann::json& precursors);
 
             bool checkJsonNameExists(const std::string& name);
@@ -53,9 +54,8 @@ namespace parse {
 
             std::pmr::vector<std::string> stringDelimiter(const std::string& originalPrecursors);
 
-            void recipeParser(std::pmr::vector<std::string>& originalPrecursorVector);
-
-            nlohmann::json createPrecursorArray(std::pmr::vector<precursor::precursorToken>);
+            void recipeParser(std::pmr::vector<std::string>& originalPrecursorVector,
+                const std::string& originalName);
 
             void multiplyRecipe(const std::string& recipeName, int amount,
             std::pmr::vector<precursor::precursorToken>& readyPrecursors);

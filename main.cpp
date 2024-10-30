@@ -45,7 +45,7 @@ int main() {
                 std::string originalPrecursors;
                 cin >> originalPrecursors;
                 std::pmr::vector<std::string> originalPrecursorVector = parser.stringDelimiter(originalPrecursors);
-                parser.recipeParser(originalPrecursorVector);
+                parser.recipeParser(originalPrecursorVector,originalRecipe);
 
             }
             else {

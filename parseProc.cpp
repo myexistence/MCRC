@@ -35,15 +35,15 @@ namespace parse {
     }
 
     //When a precursor doesn't exist, create an ID and precursor object
-    nlohmann::json parseProc::createPrecursorInput(const std::pmr::vector<precursor::precursorToken>& precursors) {
-        nlohmann::json holdPrecursor = nlohmann::json::array();
+    nlohmann::json parseProc::createPrecursorInput(const std::pmr::vector<precursor::precursorToken>& precursors,
+        nlohmann::json& precursorArray) {
         for (const auto& it: precursors) {
-            holdPrecursor.push_back({
+            precursorArray.push_back({
                 {"amount", it.precursorAmount},
                 {"id", nextJsonID()}
             });
         }
-        return holdPrecursor;
+        return precursorArray;
     }
 
     //Turn a comma seperated list of precrusors into a vector
@@ -62,16 +62,24 @@ namespace parse {
 
     //Take in original precursors & turn them into tokens,
     //Sends tokens to be turned into arrays, then sends them to be turned into a recipe
-    void parseProc::recipeParser(std::pmr::vector<std::string>& originalPrecursorVector) {
+    void parseProc::recipeParser(std::pmr::vector<std::string>& originalPrecursorVector,
+        const std::string& originalName) {
         std::pmr::vector<precursor::precursorToken> precursorVector;
+        nlohmann::json createArray = nlohmann::json::array();
         for (const auto& precursor_it: originalPrecursorVector) {
             cout<<"How many "<<  precursor_it << " do you need?" <<std::endl;
             int amountNeeded; cin >> amountNeeded;
             precursor::precursorToken toAdd(precursor_it,amountNeeded);
-            precursorVector.push_back(toAdd);
+            if(!checkJsonNameExists(precursor_it)) {
+                precursorVector.push_back(toAdd);
+            }else
+                toAppend(precursor_it,createArray,amountNeeded);
         }
-        for (auto newPrecursor_it: precursorVector) {
-        }
+        createPrecursorInput(precursorVector,createArray);
+        addNewRecipe(originalName,createArray);
+        cout<< std::setw(4)<<database<<std::endl;
+
+
     }
 
     //If a precursor already exists, find the ID given a name and create the object
@@ -85,12 +93,12 @@ namespace parse {
     }
 
     //Create an entire recipe
-    void parseProc::addNewRecipe(precursor::precursorToken& parent, nlohmann::json& precursors) {
+    void parseProc::addNewRecipe(const std::string& parent, nlohmann::json& precursors) {
         auto nextID = nextJsonID();
         database["recipes"].push_back({
         {"amount", 1 /*parent.yield create yield member in precursorToken*/},
         {"id", nextID},
-        {"name", parent.precursorName},
+        {"name", parent},
         {"precursors", precursors}});
     }
 
