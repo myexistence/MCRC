@@ -51,6 +51,9 @@ namespace parse {
             bool vectorOutputCheck(precursor::precursorToken& precursor,
             std::pmr::vector<precursor::precursorToken>& readyPrecursors);
 
+            std::pmr::vector<std::string> stringDelimiter(const std::string& originalPrecursors);
+
+
             void multiplyRecipe(const std::string& recipeName, int amount,
             std::pmr::vector<precursor::precursorToken>& readyPrecursors);
         };
