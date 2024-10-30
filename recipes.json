@@ -1,43 +1,6 @@
 {
     "baseItems": [
-        {
-            "id": 25614,
-            "name": "iron"
-        },
-        {
-            "id": 39554,
-            "name": "wood"
-        }
     ],
     "recipes": [
-        {
-            "amount": 1,
-            "id": 30824,
-            "name": "iron_chest",
-            "precursors": [
-                {
-                    "amount": 8,
-                    "id": 25614,
-                    "name": "iron"
-                },
-                {
-                    "amount": 1,
-                    "id": 87409,
-                    "name": "chest"
-                }
-            ]
-        },
-        {
-            "amount": 1,
-            "id": 87409,
-            "name": "chest",
-            "precursors": [
-                {
-                    "amount": 8,
-                    "id": 39554,
-                    "name": "wood"
-                }
-            ]
-        }
     ]
 }
