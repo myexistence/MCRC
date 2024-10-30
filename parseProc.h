@@ -39,6 +39,8 @@ namespace parse {
 
             int nextJsonID();
 
+            bool idExists(const int& id);
+
             void saveJson();
 
             bool checkBasicItems(const std::string& name);
