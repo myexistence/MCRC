@@ -136,6 +136,16 @@ namespace parse {
             return newID;
         newID = nextJsonID();
     }
+
+    bool parseProc::idExists(const int &id) {
+        for (const auto& it : database["baseItems"])
+            if(it["id"] == id)
+                return  true;
+        for (const auto& it : database["recipes"])
+            if(it["id"] == id)
+                return  true;
+        return false;
+    }
     void parseProc::saveJson() {
         std::ofstream output("../recipes.json");
         output << std::setw(4) << database;
