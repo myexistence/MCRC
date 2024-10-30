@@ -1,5 +1,7 @@
 # MCRC - Minecraft Recipe Calculator
 
+**Important*** to note this was written on a MBP M1. Haven't tested it in other environments, so it may not work.
+
 A C++ program that helps users calculate and manage crafting recipes with their precursor materials. Users can create, store, and calculate the required materials for crafting any item.
 
 I made this program for a modpack called GregTech: New Horizons, because the recipes are brutal and the built-in crafting calculator isn't good enough
