@@ -4,7 +4,10 @@
 
 #include <iostream>
 #include "parseProc.h"
+
+#include <random>
 #include <sstream>
+#include <__random/random_device.h>
 
 using std::cout;
 using std::cin;
@@ -123,10 +126,15 @@ namespace parse {
     }
 
     int parseProc::nextJsonID() {
-        size_t idCount = 0;
-        idCount += database["baseItems"].size();
-        idCount += database["recipes"].size();
-        return ++idCount;
+        int min = 0;
+        int max = 100000;
+        std::random_device toSeed;
+        std::mt19937 seed(toSeed());
+        std::uniform_int_distribution<> rng(min,max);
+        int newID = rng(seed);
+        if(!idExists(newID))
+            return newID;
+        newID = nextJsonID();
     }
     void parseProc::saveJson() {
         std::ofstream output("../recipes.json");
