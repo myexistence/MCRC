@@ -90,9 +90,25 @@ namespace parse {
         std::ofstream output;
         output << std::setw(4) << database;
     }
+
+    std::pmr::map<int,int> parseProc::findPrecursors(const std::string& recipeName) {
+        std::pmr::map<int,int> precursorMap;
+        for(auto it : database["recipes"]) {
+            if (it["name"] == recipeName)
+                for(auto it2: it["precursors"])
+                    precursorMap.insert({
+                        it2["id"].get<int>(),
+                        it2["amount"].get<int>()
+                    });
+        }
+        return precursorMap;
+    }
+
     void parseProc::multiplyRecipe(const std::string& recipeName, const int& amount) {
         std::pmr::vector<precursor::precursorToken> cleanData;
-        while( std::pmr::vector<precursor::precursorToken>& rawData = findPrecursors(recipeName)) {
+        std::pmr::map<int,int>;
+        while(true) {
+            break;
 
 
         }

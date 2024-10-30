@@ -44,6 +44,9 @@ namespace parse {
 
             bool checkRecipes(const std::string& name);
 
+            std::pmr::map<int,int> findPrecursors(const std::string& recipeName);
+
+
             void multiplyRecipe(const std::string& recipeName, const int& amount);
         };
 
