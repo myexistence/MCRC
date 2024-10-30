@@ -45,7 +45,8 @@ int main() {
                 std::string originalPrecursors;
                 cin >> originalPrecursors;
                 std::pmr::vector<std::string> originalPrecursorVector = parser.stringDelimiter(originalPrecursors);
-                for (const auto& original: originalPrecursorVector) {
+                for (const auto& original_precursor: originalPrecursorVector) {
+                    cout<< ""
                 }
             }
             else {
