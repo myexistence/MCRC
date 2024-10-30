@@ -87,7 +87,7 @@ namespace parse {
         return ++idCount;
     }
     void parseProc::saveJson() {
-        std::ofstream output;
+        std::ofstream output("../recipes.json");
         output << std::setw(4) << database;
     }
 
