@@ -51,7 +51,6 @@ namespace parse {
         std::pmr::vector<std::string> originalPrecursorVector;
         //start delimiter
         while(std::getline(tempSS, tempStorage, del )) {
-            std::cout <<"Current delimited string is: "<< tempStorage <<std::endl;
             originalPrecursorVector.push_back(tempStorage);
 
         }
