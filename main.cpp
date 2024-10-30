@@ -20,13 +20,14 @@ int main() {
             std::string originalRecipe;
             cin >> originalRecipe;
 
-            cout<< "How many "<< originalRecipe <<" would you like to craft?"<<std::endl;
-            int originalAmount;
-            cin >> originalAmount;
-
             //Recipe in database - multiply and output
             if(parser.checkJsonNameExists(originalRecipe) == true) {
                 cout<< "Found "<< originalRecipe << "!" << std::endl;
+
+                cout<< "How many "<< originalRecipe <<" would you like to craft?"<<std::endl;
+                int originalAmount;
+                cin >> originalAmount;
+
                 std::pmr::vector<precursorToken> readyPrecursors;
                 parser.multiplyRecipe(originalRecipe,originalAmount,readyPrecursors);
                 cout<< "To make " << originalAmount <<" " << originalRecipe<< "(s) you need: "<<std::endl;
@@ -43,7 +44,9 @@ int main() {
                 cout<<"List precursors. (Use a ',' for seperation and '_' for spaces)"<<std::endl;
                 std::string originalPrecursors;
                 cin >> originalPrecursors;
-                parser.stringDelimiter(originalPrecursors);
+                std::pmr::vector<std::string> originalPrecursorVector = parser.stringDelimiter(originalPrecursors);
+                for (const auto& original: originalPrecursorVector) {
+                }
             }
             else {
                 parser.addBaseItem(originalRecipe);
