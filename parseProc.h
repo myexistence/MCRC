@@ -55,6 +55,8 @@ namespace parse {
 
             void recipeParser(std::pmr::vector<std::string>& originalPrecursorVector);
 
+            nlohmann::json createPrecursorArray(std::pmr::vector<precursor::precursorToken>);
+
             void multiplyRecipe(const std::string& recipeName, int amount,
             std::pmr::vector<precursor::precursorToken>& readyPrecursors);
         };

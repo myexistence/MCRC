@@ -40,7 +40,7 @@ namespace parse {
         for (const auto& it: precursors) {
             holdPrecursor.push_back({
                 {"amount", it.precursorAmount},
-                {"id", matchID(it.precursorName)}
+                {"id", nextJsonID()}
             });
         }
         return holdPrecursor;
@@ -60,7 +60,8 @@ namespace parse {
         return originalPrecursorVector;
     }
 
-    //Take in original precursors & turn them into tokens
+    //Take in original precursors & turn them into tokens,
+    //Sends tokens to be turned into arrays, then sends them to be turned into a recipe
     void parseProc::recipeParser(std::pmr::vector<std::string>& originalPrecursorVector) {
         std::pmr::vector<precursor::precursorToken> precursorVector;
         for (const auto& precursor_it: originalPrecursorVector) {
@@ -70,8 +71,6 @@ namespace parse {
             precursorVector.push_back(toAdd);
         }
         for (auto newPrecursor_it: precursorVector) {
-
-
         }
     }
 
