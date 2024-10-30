@@ -4,6 +4,7 @@
 
 #include <iostream>
 #include "parseProc.h"
+#include <sstream>
 
 using std::cout;
 using std::cin;
@@ -41,6 +42,20 @@ namespace parse {
             });
         }
         return holdPrecursor;
+    }
+
+    std::pmr::vector<std::string> parseProc::stringDelimiter(const std::string& originalPrecursors) {
+        std::stringstream tempSS(originalPrecursors);
+        std::string tempStorage;
+        char del = ',';
+        std::pmr::vector<std::string> originalPrecursorVector;
+        //start delimiter
+        while(std::getline(tempSS, tempStorage, del )) {
+            std::cout <<"Current delimited string is: "<< tempStorage <<std::endl;
+            originalPrecursorVector.push_back(tempStorage);
+
+        }
+        return originalPrecursorVector;
     }
 
     nlohmann::json parseProc::toAppend(const std::string& precursorName, nlohmann::json& precursors, const int& amount) {
