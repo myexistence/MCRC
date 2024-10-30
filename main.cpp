@@ -46,6 +46,7 @@ int main() {
                 cin >> originalPrecursors;
                 std::pmr::vector<std::string> originalPrecursorVector = parser.stringDelimiter(originalPrecursors);
                 parser.recipeParser(originalPrecursorVector,originalRecipe);
+                cout << "All precursors have been added" <<std::endl;
 
             }
             else {
@@ -53,13 +54,6 @@ int main() {
                 parser.saveJson();
                 break;
             }
-
-
-
-
-
-
-            //if (parser.)
         }
         char cont;
         cout<<"Continue? ('Y' or 'N')" << std::endl;
