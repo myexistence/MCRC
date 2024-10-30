@@ -47,9 +47,10 @@ int main() {
                 std::pmr::vector<std::string> originalPrecursorVector = parser.stringDelimiter(originalPrecursors);
                 parser.recipeParser(originalPrecursorVector,originalRecipe);
                 cout << "All precursors have been added" <<std::endl;
+                break;
 
             }
-            else {
+            if (originalPrecursorsResponse == 'n') {
                 parser.addBaseItem(originalRecipe);
                 parser.saveJson();
                 break;

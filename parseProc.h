@@ -28,6 +28,8 @@ namespace parse {
 
             int matchID (const std::string& nameMatch);
 
+            int depthMatchID(const std::string& nameMatch);
+
 
             nlohmann::json createPrecursorInput(const std::pmr::vector<precursor::precursorToken>& precursors,
                 nlohmann::json& precursorArray);
@@ -48,6 +50,8 @@ namespace parse {
             bool checkBasicItems(const std::string& name);
 
             bool checkRecipes(const std::string& name);
+
+            bool checkRecipeDepth(const std::string& name);
 
             std::pmr::map<int,int> findPrecursors(const std::string& recipeName);
 

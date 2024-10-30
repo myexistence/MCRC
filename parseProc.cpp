@@ -14,34 +14,59 @@ using std::cin;
 
 namespace parse {
     void parseProc::addBaseItem(const std::string& name) {
-        auto id = nextJsonID();
+        int id;
+        if (checkRecipeDepth(name))
+            id = matchID(name);
+        else
+            id = nextJsonID();
         database["baseItems"].push_back({
         {"name",name},
         {"id",id}
         });
     }
+    //Given a name, find a matching ID in Depth
+    int parseProc::depthMatchID(const std::string& nameMatch) {
+        for (const auto& it : database["recipes"]) {
+            for(auto it2: it["precursors"])
+                if(it2["name"] == nameMatch)
+                    return  it["id"];
+        }
+    }
     //Given a name, find a matching ID
     int parseProc::matchID(const std::string &nameMatch){
-        if(!checkJsonNameExists(nameMatch)){
+        if(!checkJsonNameExists(nameMatch) && !checkRecipeDepth(nameMatch)){
             std::cerr<<"ERROR: Tried to match " << nameMatch << " and it doesn't exist"<<std::endl<<"EXITING";
             return -1;
         }
-        for (const auto& it : database["baseItems"])
+        for (const auto& it : database["baseItems"]) {
             if(it["name"] == nameMatch)
                 return  it["id"];
-        for (const auto& it : database["recipes"])
+        }
+        for (const auto& it : database["recipes"]) {
             if(it["name"] == nameMatch)
                 return  it["id"];
+        }
+        for (const auto& it : database["recipes"]) {
+            for(auto it2: it["precursors"])
+                if(it2["name"] == nameMatch)
+                    return  it2["id"];
+        }
         std::cerr << "ERROR: "<< nameMatch << " exists but has no matching ID" << std::endl << "EXITING";
         return -1;
     }
     //When a precursor doesn't exist, create an ID and precursor object
     nlohmann::json parseProc::createPrecursorInput(const std::pmr::vector<precursor::precursorToken>& precursors,
         nlohmann::json& precursorArray) {
+        int id;
         for (const auto& it: precursors) {
+            if(checkJsonNameExists(it.precursorName) || checkRecipeDepth(it.precursorName))
+                id = matchID(it.precursorName);
+            else
+                id = nextJsonID();
             precursorArray.push_back({
                 {"amount", it.precursorAmount},
-                {"id", nextJsonID()}
+                {"id", id},
+                {"name", it.precursorName}
             });
         }
         return precursorArray;
@@ -117,7 +142,7 @@ namespace parse {
     //Create an entire recipe
     void parseProc::addNewRecipe(const std::string& parent, nlohmann::json& precursors) {
         int ID;
-        if(checkJsonNameExists(parent))
+        if(checkJsonNameExists(parent) || checkRecipeDepth(parent))
             ID = matchID(parent);
         else
             ID = nextJsonID();
@@ -132,13 +157,23 @@ namespace parse {
         for (const auto& it: database["baseItems"])
             if(it["name"] == name)
                 return true;
+
         return false;
     }
 
+    bool parseProc::checkRecipeDepth(const std::string& name) {
+        for(const auto& it : database["recipes"]) {
+            for(auto it2: it["precursors"])
+                if(it2["name"] == name)
+                    return true;
+        }
+        return false;
+    }
     bool parseProc::checkRecipes(const std::string& name) {
-        for(const auto& it : database["recipes"])
+        for(const auto& it : database["recipes"]) {
             if(it["name"] == name)
                 return true;
+        }
         return false;
     }
 
