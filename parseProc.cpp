@@ -119,7 +119,8 @@ namespace parse {
         int ID;
         if(checkJsonNameExists(parent))
             ID = matchID(parent);
-         ID = nextJsonID();
+        else
+            ID = nextJsonID();
         database["recipes"].push_back({
         {"amount", 1 /*parent.yield create yield member in precursorToken*/},
         {"id", ID},
