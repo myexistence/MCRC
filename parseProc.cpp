@@ -129,7 +129,6 @@ namespace parse {
 
     void parseProc::multiplyRecipe
     (const std::string& recipeName, int amount,std::pmr::vector<precursor::precursorToken>& readyPrecursors) {
-        int x=0;
         std::pmr::map<int,int> rawPrecursors = findPrecursors(recipeName);
         std::pmr::vector<precursor::precursorToken> loopBreaker;
         for (auto& it : rawPrecursors) {
@@ -143,7 +142,6 @@ namespace parse {
         for (auto& it2: loopBreaker) {
             if(checkRecipes(it2.precursorName)) {
                 multiplyRecipe(it2.precursorName,it2.precursorAmount,readyPrecursors);
-
             }
         }
     }
