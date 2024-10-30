@@ -84,9 +84,31 @@ namespace parse {
         saveJson();
 
         for(const auto& it : precursorVector) {
+            cout << "Since " << it.precursorName << " isn't in the DB, let's add it." << std::endl;
+
 
         }
     }
+
+    void parseProc::createMoreRecipes(const std::string &originalName) {
+        std::cout << "Does it have any precursors? ('Y' or 'N')"<<std::endl;
+        char originalPrecursorsResponse;
+        cin >> originalPrecursorsResponse;
+
+        if (originalPrecursorsResponse == 'y') {
+            cout<<"List precursors. (Use a ',' for seperation and '_' for spaces)"<<std::endl;
+            std::string originalPrecursors;
+            cin >> originalPrecursors;
+            std::pmr::vector<std::string> originalPrecursorVector = stringDelimiter(originalPrecursors);
+            recipeParser(originalPrecursorVector,originalName);
+
+        }
+        else {
+            addBaseItem(originalName);
+            saveJson();
+        }
+    }
+
 
     //If a precursor already exists, find the ID given a name and create the object
     nlohmann::json parseProc::toAppend(const std::string& precursorName, nlohmann::json& precursors, const int& amount) {
