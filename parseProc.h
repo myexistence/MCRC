@@ -53,7 +53,7 @@ namespace parse {
 
             std::pmr::vector<std::string> stringDelimiter(const std::string& originalPrecursors);
 
-            void recipeSaver(std::pmr::vector<std::string>);
+            void recipeParser(std::pmr::vector<std::string>& originalPrecursorVector);
 
             void multiplyRecipe(const std::string& recipeName, int amount,
             std::pmr::vector<precursor::precursorToken>& readyPrecursors);

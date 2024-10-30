@@ -57,6 +57,17 @@ namespace parse {
         return originalPrecursorVector;
     }
 
+    void parseProc::recipeParser(std::pmr::vector<std::string>& originalPrecursorVector) {
+        for (const auto& precursor_vector: originalPrecursorVector) {
+            cout<<"How many "<<  precursor_vector << " do you need?" <<std::endl;
+            int amountNeeded; cin >> amountNeeded;
+
+
+        }
+
+    }
+
+
     nlohmann::json parseProc::toAppend(const std::string& precursorName, nlohmann::json& precursors, const int& amount) {
         int id = matchID(precursorName);
         precursors.push_back({
