@@ -18,6 +18,7 @@ namespace parse {
         });
     }
 
+    //Given a name, find a matching ID
     int parseProc::matchID(const std::string &nameMatch){
         if(!checkJsonNameExists(nameMatch)){
             std::cerr<<"ERROR: Tried to match " << nameMatch << " and it doesn't exist"<<std::endl<<"EXITING";
@@ -33,6 +34,7 @@ namespace parse {
         return -1;
     }
 
+    //When a precursor doesn't exist, create an ID and precursor object
     nlohmann::json parseProc::createPrecursorInput(const std::pmr::vector<precursor::precursorToken>& precursors) {
         nlohmann::json holdPrecursor = nlohmann::json::array();
         for (const auto& it: precursors) {
@@ -44,6 +46,7 @@ namespace parse {
         return holdPrecursor;
     }
 
+    //Turn a comma seperated list of precrusors into a vector
     std::pmr::vector<std::string> parseProc::stringDelimiter(const std::string& originalPrecursors) {
         std::stringstream tempSS(originalPrecursors);
         std::string tempStorage;
@@ -57,17 +60,22 @@ namespace parse {
         return originalPrecursorVector;
     }
 
+    //Take in original precursors & turn them into tokens
     void parseProc::recipeParser(std::pmr::vector<std::string>& originalPrecursorVector) {
-        for (const auto& precursor_vector: originalPrecursorVector) {
-            cout<<"How many "<<  precursor_vector << " do you need?" <<std::endl;
+        std::pmr::vector<precursor::precursorToken> precursorVector;
+        for (const auto& precursor_it: originalPrecursorVector) {
+            cout<<"How many "<<  precursor_it << " do you need?" <<std::endl;
             int amountNeeded; cin >> amountNeeded;
+            precursor::precursorToken toAdd(precursor_it,amountNeeded);
+            precursorVector.push_back(toAdd);
+        }
+        for (auto newPrecursor_it: precursorVector) {
 
 
         }
-
     }
 
-
+    //If a precursor already exists, find the ID given a name and create the object
     nlohmann::json parseProc::toAppend(const std::string& precursorName, nlohmann::json& precursors, const int& amount) {
         int id = matchID(precursorName);
         precursors.push_back({
@@ -77,6 +85,7 @@ namespace parse {
         return precursors;
     }
 
+    //Create an entire recipe
     void parseProc::addNewRecipe(precursor::precursorToken& parent, nlohmann::json& precursors) {
         auto nextID = nextJsonID();
         database["recipes"].push_back({
@@ -105,6 +114,7 @@ namespace parse {
             return false;
         return true;
     }
+
     int parseProc::nextJsonID() {
         size_t idCount = 0;
         idCount += database["baseItems"].size();
@@ -116,6 +126,7 @@ namespace parse {
         output << std::setw(4) << database;
     }
 
+    //Turn a map of
     std::pmr::map<int,int> parseProc::findPrecursors(const std::string& recipeName) {
         std::pmr::map<int,int> rawPrecursors;
         for(auto it : database["recipes"]) {
@@ -129,6 +140,7 @@ namespace parse {
         return rawPrecursors;
     }
 
+    //Take an ID and matches it to a name that exist in the DB
     std::string parseProc::idNameMatch(const int& id) {
         for (const auto& it : database["baseItems"])
             if(it["id"] == id)
@@ -140,6 +152,7 @@ namespace parse {
 
     }
 
+    //Takes a token and checks to see if it already exists in the vector then adds the two together
     bool parseProc::vectorOutputCheck(precursor::precursorToken& precursor,
         std::pmr::vector<precursor::precursorToken>& readyPrecursors) {
         if(auto searchVector
@@ -152,6 +165,7 @@ namespace parse {
         return false;
     }
 
+    //Recursive: Takes a recipe and multiplies its precursors by it
     void parseProc::multiplyRecipe
     (const std::string& recipeName, int amount,std::pmr::vector<precursor::precursorToken>& readyPrecursors) {
         std::pmr::map<int,int> rawPrecursors = findPrecursors(recipeName);
