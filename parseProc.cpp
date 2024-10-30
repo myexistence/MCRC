@@ -11,7 +11,7 @@ using std::cin;
 namespace parse {
     void parseProc::addBaseItem(const std::string& name) {
         auto id = nextJsonID();
-        database["basicItems"].push_back({
+        database["baseItems"].push_back({
         {"name",name},
         {"id",id}
         });
@@ -62,7 +62,7 @@ namespace parse {
     }
 
     bool parseProc::checkBasicItems(const std::string& name) {
-        for (const auto& it: database["basicItems"])
+        for (const auto& it: database["baseItems"])
             if(it["name"] == name)
                 return true;
         return false;
@@ -82,7 +82,7 @@ namespace parse {
     }
     int parseProc::nextJsonID() {
         size_t idCount = 0;
-        idCount += database["basicItems"].size();
+        idCount += database["baseItems"].size();
         idCount += database["recipes"].size();
         return ++idCount;
     }
