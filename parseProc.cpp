@@ -115,6 +115,17 @@ namespace parse {
 
     }
 
+    bool parseProc::vectorOutputCheck(precursor::precursorToken& precursor, std::pmr::vector<precursor::precursorToken>& readyPrecursors) {
+        if(auto searchVector
+            = std::find(readyPrecursors.begin(), readyPrecursors.end(), precursor);
+            searchVector != readyPrecursors.end())
+        {
+            searchVector->precursorAmount += precursor.precursorAmount;
+            return true;
+        }
+        return false;
+    }
+
     std::pmr::vector<precursor::precursorToken> parseProc::multiplyRecipe
     (const std::string& recipeName, int amount,std::pmr::vector<precursor::precursorToken>& readyPrecursors)
     {
