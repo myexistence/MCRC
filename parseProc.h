@@ -41,6 +41,8 @@ namespace parse {
 
             bool idExists(const int& id);
 
+            void createMoreRecipes(const std::string& originalName);
+
             void saveJson();
 
             bool checkBasicItems(const std::string& name);

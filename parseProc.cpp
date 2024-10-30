@@ -58,13 +58,13 @@ namespace parse {
         //start delimiter
         while(std::getline(tempSS, tempStorage, del )) {
             originalPrecursorVector.push_back(tempStorage);
-
         }
         return originalPrecursorVector;
     }
 
     //Take in original precursors & turn them into tokens,
     //Sends tokens to be turned into arrays, then sends them to be turned into a recipe
+    //Calls a function to enter recursion
     void parseProc::recipeParser(std::pmr::vector<std::string>& originalPrecursorVector,
         const std::string& originalName) {
         std::pmr::vector<precursor::precursorToken> precursorVector;
@@ -78,11 +78,14 @@ namespace parse {
             }else
                 toAppend(precursor_it,createArray,amountNeeded);
         }
+
         createPrecursorInput(precursorVector,createArray);
         addNewRecipe(originalName,createArray);
-        cout<< std::setw(4)<<database<<std::endl;
+        saveJson();
 
+        for(const auto& it : precursorVector) {
 
+        }
     }
 
     //If a precursor already exists, find the ID given a name and create the object
