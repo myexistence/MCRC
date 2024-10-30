@@ -47,7 +47,8 @@ namespace parse {
             std::pmr::map<int,int> findPrecursors(const std::string& recipeName);
 
 
-            void multiplyRecipe(const std::string& recipeName, const int& amount);
+            std::pmr::vector<precursor::precursorToken> multiplyRecipe(const std::string& recipeName, int amount,
+                 std::pmr::vector<precursor::precursorToken>& readyPrecursors);
         };
 
 

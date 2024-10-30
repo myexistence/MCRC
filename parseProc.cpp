@@ -92,32 +92,34 @@ namespace parse {
     }
 
     std::pmr::map<int,int> parseProc::findPrecursors(const std::string& recipeName) {
-        std::pmr::map<int,int> precursorMap;
+        std::pmr::map<int,int> rawPrecursors;
         for(auto it : database["recipes"]) {
             if (it["name"] == recipeName)
                 for(auto it2: it["precursors"])
-                    precursorMap.insert({
+                    rawPrecursors.insert({
                         it2["id"].get<int>(),
                         it2["amount"].get<int>()
                     });
         }
-        return precursorMap;
+        return rawPrecursors;
     }
 
-    void parseProc::multiplyRecipe(const std::string& recipeName, const int& amount) {
-        std::pmr::vector<precursor::precursorToken> cleanData;
-        std::pmr::map<int,int>;
-        while(true) {
-            break;
-
-
+    std::pmr::vector<precursor::precursorToken> parseProc::multiplyRecipe
+    (const std::string& recipeName, int amount,std::pmr::vector<precursor::precursorToken>& readyPrecursors)
+    {
+        std::pmr::map<int,int> rawPrecursors = findPrecursors(recipeName);
+        for (auto& it : rawPrecursors) {
+            std::string newName = idNameMatch(it.first);
+            int newAmount = (amount * it.second);
+            precursor::precursorToken toAdd(newName,newAmount);
+            readyPrecursors.push_back(toAdd);
+            }
+        for (auto it& : readyPrecursors) {
+            if(!checkBasicItems(it.precursorName) && checkRecipes(it.precursorName)) {
+                multiplyRecipe(it.precursorName,it.precursorAmount,readyPrecursors);
+            }
         }
-
-
-
-
-
-
+        return readyPrecursors;
     }
 
 
