@@ -104,7 +104,16 @@ namespace parse {
         return rawPrecursors;
     }
 
-    std::string parseProc::idNameMatch(const int& id){}
+    std::string parseProc::idNameMatch(const int& id) {
+        for (const auto& it : database["baseItems"])
+            if(it["id"] == id)
+                return  it["name"];
+        for (const auto& it : database["recipes"])
+            if(it["id"] == id)
+                return  it["name"];
+            std::cerr << "ERROR: "<< id << " exists but has no matching name" << std::endl << "EXITING" << std::endl;
+
+    }
 
     std::pmr::vector<precursor::precursorToken> parseProc::multiplyRecipe
     (const std::string& recipeName, int amount,std::pmr::vector<precursor::precursorToken>& readyPrecursors)
@@ -116,7 +125,7 @@ namespace parse {
             precursor::precursorToken toAdd(newName,newAmount);
             readyPrecursors.push_back(toAdd);
             }
-        for (auto it& : readyPrecursors) {
+        for (auto& it : readyPrecursors) {
             if(!checkBasicItems(it.precursorName) && checkRecipes(it.precursorName)) {
                 multiplyRecipe(it.precursorName,it.precursorAmount,readyPrecursors);
             }
