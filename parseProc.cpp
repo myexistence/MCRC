@@ -104,6 +104,8 @@ namespace parse {
         return rawPrecursors;
     }
 
+    std::string parseProc::idNameMatch(const int& id){}
+
     std::pmr::vector<precursor::precursorToken> parseProc::multiplyRecipe
     (const std::string& recipeName, int amount,std::pmr::vector<precursor::precursorToken>& readyPrecursors)
     {
