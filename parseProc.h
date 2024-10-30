@@ -48,6 +48,8 @@ namespace parse {
 
             std::string idNameMatch(const int& id);
 
+            bool parseProc::vectorOutputCheck(precursor::precursorToken& precursor,
+            std::pmr::vector<precursor::precursorToken>& readyPrecursors);
 
             std::pmr::vector<precursor::precursorToken> multiplyRecipe(const std::string& recipeName, int amount,
                  std::pmr::vector<precursor::precursorToken>& readyPrecursors);
