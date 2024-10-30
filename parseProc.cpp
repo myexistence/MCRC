@@ -115,7 +115,8 @@ namespace parse {
 
     }
 
-    bool parseProc::vectorOutputCheck(precursor::precursorToken& precursor, std::pmr::vector<precursor::precursorToken>& readyPrecursors) {
+    bool parseProc::vectorOutputCheck(precursor::precursorToken& precursor,
+        std::pmr::vector<precursor::precursorToken>& readyPrecursors) {
         if(auto searchVector
             = std::find(readyPrecursors.begin(), readyPrecursors.end(), precursor);
             searchVector != readyPrecursors.end())
@@ -126,22 +127,25 @@ namespace parse {
         return false;
     }
 
-    std::pmr::vector<precursor::precursorToken> parseProc::multiplyRecipe
-    (const std::string& recipeName, int amount,std::pmr::vector<precursor::precursorToken>& readyPrecursors)
-    {
+    void parseProc::multiplyRecipe
+    (const std::string& recipeName, int amount,std::pmr::vector<precursor::precursorToken>& readyPrecursors) {
+        int x=0;
         std::pmr::map<int,int> rawPrecursors = findPrecursors(recipeName);
+        std::pmr::vector<precursor::precursorToken> loopBreaker;
         for (auto& it : rawPrecursors) {
             std::string newName = idNameMatch(it.first);
             int newAmount = (amount * it.second);
             precursor::precursorToken toAdd(newName,newAmount);
-            readyPrecursors.push_back(toAdd);
-            }
-        for (auto& it : readyPrecursors) {
-            if(!checkBasicItems(it.precursorName) && checkRecipes(it.precursorName)) {
-                multiplyRecipe(it.precursorName,it.precursorAmount,readyPrecursors);
+            if(!vectorOutputCheck(toAdd,readyPrecursors))
+                readyPrecursors.push_back(toAdd);
+            loopBreaker.push_back(toAdd);
+        }
+        for (auto& it2: loopBreaker) {
+            if(checkRecipes(it2.precursorName)) {
+                multiplyRecipe(it2.precursorName,it2.precursorAmount,readyPrecursors);
+
             }
         }
-        return readyPrecursors;
     }
 
 
