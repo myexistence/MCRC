@@ -36,10 +36,14 @@ int main() {
             }
             //Create recipe
             std::cout << "Does it have any precursors? ('Y' or 'N')"<<std::endl;
-            char response;
-            cin >> response;
-            if (response == 'y') {
+            char originalPrecursorsResponse;
+            cin >> originalPrecursorsResponse;
 
+            if (originalPrecursorsResponse == 'y') {
+                cout<<"List precursors. (Use a ',' for seperation and '_' for spaces)"<<std::endl;
+                std::string originalPrecursors;
+                cin >> originalPrecursors;
+                parser.stringDelimiter(originalPrecursors);
             }
             else {
                 parser.addBaseItem(originalRecipe);
