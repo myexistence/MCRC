@@ -135,6 +135,7 @@ namespace parse {
         if(!idExists(newID))
             return newID;
         newID = nextJsonID();
+        return newID;
     }
 
     bool parseProc::idExists(const int &id) {
